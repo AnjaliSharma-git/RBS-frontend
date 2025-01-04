@@ -23,7 +23,7 @@ const BookingForm = () => {
     if (formData.date) {
       const fetchAvailableSlots = async () => {
         try {
-          const response = await axios.get(`/bookings/available-slots?date=${formData.date}`);
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/bookings/available-slots?date=${formData.date}`);
           setAvailableSlots(response.data.availableSlots);
         } catch {
           setMessage('Failed to fetch available time slots');
@@ -36,7 +36,7 @@ const BookingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/bookings/create', formData);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/bookings/create`, formData);
       setMessage('Booking successful!');
       setBooking(response.data.booking);
     } catch (err) {
