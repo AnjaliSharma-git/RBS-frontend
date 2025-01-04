@@ -40,7 +40,7 @@ const BookingForm = () => {
       setMessage('Booking successful!');
       setBooking(response.data.booking);
     } catch (err) {
-      console.error('Error creating booking:', err); // Log the error
+      console.error('Error creating booking:', err); 
       setMessage('Booking failed. Please try again.');
     }
   };

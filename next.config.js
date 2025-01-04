@@ -3,7 +3,7 @@ module.exports = {
       return [
         {
           source: '/bookings/:path*',
-          destination: 'http://localhost:5000/bookings/:path*', // Proxy requests to the backend
+          destination: 'https://rbs-backend-xhki.onrender.com/bookings/:path*', // Proxy requests to the backend
         },
       ];
     },
