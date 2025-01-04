@@ -40,15 +40,11 @@ const BookingForm = () => {
       const response = await axios.post('/bookings/create', formData);
       setMessage('Booking successful!');
       setBooking(response.data.booking);
-    } catch (error) {
-      console.error("Booking error:", error);  // Log the error for debugging
-      if (error.response && error.response.data.message) {
-        setMessage(error.response.data.message);
-      } else {
-        setMessage('Booking failed. Please try again.');
-      }
+    } catch {
+      setMessage('Booking failed. Please try again.');
     }
   };
+  
   
 
   return (
