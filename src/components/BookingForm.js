@@ -15,6 +15,7 @@ const BookingForm = () => {
   const [message, setMessage] = useState('');
   const [booking, setBooking] = useState(null); 
 
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -38,15 +39,17 @@ const BookingForm = () => {
     try {
       const response = await axios.post('/bookings/create', formData);
       setMessage('Booking successful!');
-      setBooking(response.data.booking); 
+      setBooking(response.data.booking);
     } catch (error) {
+      console.error("Booking error:", error);  // Log the error for debugging
       if (error.response && error.response.data.message) {
-        setMessage(error.response.data.message); 
+        setMessage(error.response.data.message);
       } else {
         setMessage('Booking failed. Please try again.');
       }
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-cover bg-center flex items-center justify-center">
