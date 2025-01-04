@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../utils/api';
-import BookingSummary from './BookingSummary'; 
+import BookingSummary from './BookingSummary';
 import { FaUser, FaPhone, FaCalendarAlt, FaClock, FaUsers } from 'react-icons/fa';
 
 const BookingForm = () => {
@@ -13,20 +13,21 @@ const BookingForm = () => {
   });
   const [availableSlots, setAvailableSlots] = useState([]);
   const [message, setMessage] = useState('');
-  const [booking, setBooking] = useState(null); 
+  const [booking, setBooking] = useState(null);
 
-
+  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Fetch available slots when the date changes
   useEffect(() => {
     if (formData.date) {
       const fetchAvailableSlots = async () => {
         try {
           const response = await axios.get(`/bookings/available-slots?date=${formData.date}`);
           setAvailableSlots(response.data.availableSlots);
-        } catch (error) {
+        } catch (err) {
           setMessage('Failed to fetch available time slots');
         }
       };
@@ -34,18 +35,17 @@ const BookingForm = () => {
     }
   }, [formData.date]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('/bookings/create', formData);
       setMessage('Booking successful!');
-      setBooking(response.data.booking);
-    } catch {
-      setMessage('Booking failed. Please try again.');
+      setBooking(response.data.booking); // Show the booking summary
+    } catch (err) {
+      setMessage(err.response?.data?.message || 'Booking failed. Please try again.');
     }
   };
-  
-  
 
   return (
     <div className="min-h-screen bg-cover bg-center flex items-center justify-center">
@@ -56,6 +56,7 @@ const BookingForm = () => {
           <BookingSummary booking={booking} />
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Date Input */}
             <div className="flex items-center space-x-4">
               <FaCalendarAlt className="text-blue-400 text-xl" />
               <input
@@ -68,6 +69,7 @@ const BookingForm = () => {
               />
             </div>
 
+            {/* Time Selector */}
             <div className="flex items-center space-x-4">
               <FaClock className="text-blue-400 text-xl" />
               <select
@@ -86,6 +88,7 @@ const BookingForm = () => {
               </select>
             </div>
 
+            {/* Number of Guests */}
             <div className="flex items-center space-x-4">
               <FaUsers className="text-blue-400 text-xl" />
               <input
@@ -100,6 +103,7 @@ const BookingForm = () => {
               />
             </div>
 
+            {/* Name Input */}
             <div className="flex items-center space-x-4">
               <FaUser className="text-blue-400 text-xl" />
               <input
@@ -113,6 +117,7 @@ const BookingForm = () => {
               />
             </div>
 
+            {/* Contact Input */}
             <div className="flex items-center space-x-4">
               <FaPhone className="text-blue-400 text-xl" />
               <input
@@ -126,6 +131,7 @@ const BookingForm = () => {
               />
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               className="w-full py-4 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 transition"
@@ -135,6 +141,7 @@ const BookingForm = () => {
           </form>
         )}
 
+        {/* Feedback Message */}
         {message && (
           <p
             className={`text-center text-lg mt-4 ${
